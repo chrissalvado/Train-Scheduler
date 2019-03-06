@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.5/firebase.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Document</title>
@@ -16,7 +17,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-sm-12">
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
                         <h1 class="display-4">Anytime is Train Time</h1>
@@ -24,82 +25,119 @@
                     </div>
                 </div>
                 <table class="table">
-                        <thead class="thead-dark">
-                          <tr>
+                    <thead class="thead-dark">
+                        <tr>
                             <th scope="col">Train Name</th>
                             <th scope="col">Destination</th>
                             <th scope="col">Frequency</th>
                             <th scope="col">Next Arrival</th>
                             <th scope="col">Minutes Away</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
                             <th scope="row">1</th>
                             <td>Mark</td>
                             <td>Otto</td>
                             <td>@mdo</td>
                             <td>filler</td>
-                          </tr>
-                          <tr>
+                        </tr>
+                        <tr>
                             <th scope="row">2</th>
                             <td>Jacob</td>
                             <td>Thornton</td>
                             <td>@fat</td>
                             <td>filler</td>
-                          </tr>
-                          <tr>
+                        </tr>
+                        <tr>
                             <th scope="row">3</th>
                             <td>Larry</td>
                             <td>the Bird</td>
                             <td>@twitter</td>
                             <td>filler</td>
-                          </tr>
-                          <tr>
-                                <th scope="row">4</th>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>@twitter</td>
-                                <td>filler</td>
-                              </tr>
-                        </tbody>
-                      </table>
-                      <form>
-                            <div class="form-group">
-                              <label for="formGroupExampleInput">Train Name</label>
-                              <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input">
-                            </div>
-                            <div class="form-group">
-                              <label for="formGroupExampleInput2">Destination</label>
-                              <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input">
-                            </div>
-                            <div class="form-group">
-                                    <label for="formGroupExampleInput">First Train Time(military)</label>
-                                    <input type="text" class="form-control" id="formGroupExampleInput3" placeholder="Example input">
-                                  </div>
-                                  <div class="form-group">
-                                    <label for="formGroupExampleInput2">Frequency(minutes)</label>
-                                    <input type="text" class="form-control" id="formGroupExampleInput4" placeholder="Another input">
-                                  </div>
-                          </form>
+                        </tr>
+                        <tr>
+                            <th scope="row">4</th>
+                            <td>Larry</td>
+                            <td>the Bird</td>
+                            <td>@twitter</td>
+                            <td>filler</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <form>
+                    <div class="form-group">
+                        <label for="formGroupExampleInput">Train Name</label>
+                        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input">
+                    </div>
+                    <div class="form-group">
+                        <label for="formGroupExampleInput2">Destination</label>
+                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input">
+                    </div>
+                    <div class="form-group">
+                        <label for="formGroupExampleInput">First Train Time(military)</label>
+                        <input type="text" class="form-control" id="formGroupExampleInput3" placeholder="Example input">
+                    </div>
+                    <div class="form-group">
+                        <label for="formGroupExampleInput2">Frequency(minutes)</label>
+                        <input type="text" class="form-control" id="formGroupExampleInput4" placeholder="Another input">
+                    </div>
+                    <button type="submit" id="button1" class="btn btn-primary">Submit</button>
+                </form>
 
             </div>
         </div>
     </div>
     <script>
-            // Initialize Firebase
-            var config = {
-              apiKey: "AIzaSyAe3t25OG2jyYUAiZ5fCgkhnzOKsg6r3fo",
-              authDomain: "train-times-8c10d.firebaseapp.com",
-              databaseURL: "https://train-times-8c10d.firebaseio.com",
-              projectId: "train-times-8c10d",
-              storageBucket: "train-times-8c10d.appspot.com",
-              messagingSenderId: "724918628233"
-            };
-            firebase.initializeApp(config);
-          
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyAe3t25OG2jyYUAiZ5fCgkhnzOKsg6r3fo",
+            authDomain: "train-times-8c10d.firebaseapp.com",
+            databaseURL: "https://train-times-8c10d.firebaseio.com",
+            projectId: "train-times-8c10d",
+            storageBucket: "train-times-8c10d.appspot.com",
+            messagingSenderId: "724918628233"
+        };
+        firebase.initializeApp(config);
+        console.log(firebase);
+
+        var database = firebase.database();
+
+        $("#button1").on("click", function(event) {
+            event.preventDefault();
 
 
+            var TrainName = $("#formGroupExampleInput")
+                .val().trim();
+            var Destination = $("#formGroupExampleInput2")
+                .val().trim();
+            var FirstTrainTime = $("#formGroupExampleInput3")
+                .val().trim();
+            var Frequency = $("#formGroupExampleInput4")
+                .val().trim();
+                console.log(Frequency)
+
+            var ref = database.ref("TrainName");
+
+            database.ref().push({
+
+                name: TrainName,
+                Destination: Destination,
+                time: FirstTrainTime,
+                frequency: Frequency,
+            }
+
+
+
+
+
+
+
+
+            );
+
+
+        });
 
 
 
