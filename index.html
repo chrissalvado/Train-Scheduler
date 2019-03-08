@@ -10,14 +10,13 @@
     <script src="https://www.gstatic.com/firebasejs/5.8.5/firebase.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
 
 
     <title>Document</title>
 </head>
 
 <body>
-
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
@@ -30,6 +29,7 @@
                 <table class="table">
                     <thead class="thead-dark">
                         <tr>
+                            <label for id="now"></label>
                             <h3 scope="col">Big Board</h3>
                             <th scope="col">Train Name</th>
                             <th scope="col">Destination</th>
@@ -39,35 +39,8 @@
 
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <th id ="row">big red</th>
-                            <td id = "name">ny</td>
-                            <td id = "train">15</td>
-                            <td>14:35 pm</td>
-                            <td>25</td>
-                        </tr>
-                        <tr>
-                            <th scope="row1">steamer</th>
-                            <td>houston</td>
-                            <td>20</td>
-                            <td>16:00pm</td>
-                            <td>68</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">choochoo</th>
-                            <td>florida</td>
-                            <td>25</td>
-                            <td>16:30pm</td>
-                            <td>75</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">henry</th>
-                            <td>boston</td>
-                            <td>30</td>
-                            <td>18:00pm</td>
-                            <td>100</td>
-                        </tr>
+                    <tbody id="table-body">
+                       
                     </tbody>
                 </table>
                 <form>
@@ -89,7 +62,6 @@
                     </div>
                     <button type="submit" id="button1" class="btn btn-primary">Submit</button>
                 </form>
-
             </div>
         </div>
     </div>
@@ -108,7 +80,52 @@
 
         var database = firebase.database();
 
-        $("#button1").on("click", function(event) {
+
+        database.ref().on('child_added', function(snapshot){
+            console.log('this is our dude from db', snapshot.val())
+            var row = $('<tr>');
+            var name = $('<td>');
+            var destination = $('<td>');
+            var frequency = $('<td>');
+            var nextTrain = $('<td>');
+            var minutesTill = $('<td>');
+            name.text(snapshot.val().name)
+
+            destination.text(snapshot.val().Destination)
+            frequency.text(snapshot.val().frequency);
+           
+            //$("#row").text(TrainName);
+            //$("#name").text(Destination);
+            //$("#train").text(Frequency);
+
+            var currentTime = moment();
+            //$("#now").text(currentTime);
+
+
+           var FirstTimeConverted = moment(snapshot.val().time, "HH:mm");
+        console.log('first time converted!!',FirstTimeConverted);
+
+        console.log('current time rn moment()', currentTime.format('HH:mm'));
+
+           var diffTime = moment().diff(FirstTimeConverted,"minutes")
+           console.log('difference of time from to when train first starts',diffTime)
+
+           var reminated = diffTime % parseInt(snapshot.val().frequency)
+
+           console.log('this is our remianted!!!', reminated )
+
+           var minTillAnswer =  Math.abs(reminated - parseInt(snapshot.val().frequency))
+
+           console.log('How many min left',)
+           minutesTill.text(minTillAnswer)
+            
+            nextTrain.text(moment().add(minTillAnswer, "minutes").format('HH:mm'))
+
+            row.append(name, destination, frequency, nextTrain, minutesTill)
+            $('#table-body').prepend(row);
+        })
+
+        $("#button1").on("click", function (event) {
             event.preventDefault();
 
 
@@ -120,7 +137,7 @@
                 .val().trim();
             var Frequency = $("#formGroupExampleInput4")
                 .val().trim();
-                console.log(Frequency)
+            console.log(Frequency)
 
             var ref = database.ref("TrainName");
 
@@ -131,16 +148,7 @@
                 time: FirstTrainTime,
                 frequency: Frequency,
             });
-            $("#row").text(TrainName);
-            console.log(TrainName)
-            $("#name").text(Destination);
-            $("#train").text(Frequency);
-            
-            var currentTime = moment();
-            console.log(currentTime);
-           
-
-        });
+                   });
 
 
 
