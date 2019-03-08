@@ -10,6 +10,9 @@
     <script src="https://www.gstatic.com/firebasejs/5.8.5/firebase.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+
+
     <title>Document</title>
 </head>
 
@@ -27,41 +30,43 @@
                 <table class="table">
                     <thead class="thead-dark">
                         <tr>
+                            <h3 scope="col">Big Board</h3>
                             <th scope="col">Train Name</th>
                             <th scope="col">Destination</th>
                             <th scope="col">Frequency</th>
                             <th scope="col">Next Arrival</th>
-                            <th scope="col">Minutes Away</th>
+                            <th scope="col">minutes away</th>
+
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>filler</td>
+                            <th id ="row">big red</th>
+                            <td id = "name">ny</td>
+                            <td id = "train">15</td>
+                            <td>14:35 pm</td>
+                            <td>25</td>
                         </tr>
                         <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                            <td>filler</td>
+                            <th scope="row1">steamer</th>
+                            <td>houston</td>
+                            <td>20</td>
+                            <td>16:00pm</td>
+                            <td>68</td>
                         </tr>
                         <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                            <td>filler</td>
+                            <th scope="row">choochoo</th>
+                            <td>florida</td>
+                            <td>25</td>
+                            <td>16:30pm</td>
+                            <td>75</td>
                         </tr>
                         <tr>
-                            <th scope="row">4</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                            <td>filler</td>
+                            <th scope="row">henry</th>
+                            <td>boston</td>
+                            <td>30</td>
+                            <td>18:00pm</td>
+                            <td>100</td>
                         </tr>
                     </tbody>
                 </table>
@@ -75,7 +80,7 @@
                         <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input">
                     </div>
                     <div class="form-group">
-                        <label for="formGroupExampleInput">First Train Time(military)</label>
+                        <label for="formGroupExampleInput">First Train Time</label>
                         <input type="text" class="form-control" id="formGroupExampleInput3" placeholder="Example input">
                     </div>
                     <div class="form-group">
@@ -125,17 +130,15 @@
                 Destination: Destination,
                 time: FirstTrainTime,
                 frequency: Frequency,
-            }
-
-
-
-
-
-
-
-
-            );
-
+            });
+            $("#row").text(TrainName);
+            console.log(TrainName)
+            $("#name").text(Destination);
+            $("#train").text(Frequency);
+            
+            var currentTime = moment();
+            console.log(currentTime);
+           
 
         });
 
